@@ -1,0 +1,32 @@
+.summary-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  margin: 30px auto;
+  text-align: left;
+  font-family: "Arial", sans-serif;
+}
+
+.summary-title {
+  font-size: 24px;
+  color: #007bff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.summary-content p {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.summary-content strong {
+  color: #555;
+}
+
+body {
+  background-color: #f0f4f8;
+}
