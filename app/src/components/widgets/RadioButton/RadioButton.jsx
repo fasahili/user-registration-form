@@ -1,9 +1,9 @@
 import React from "react";
 import "./RadioButton.style.css";
-const RadioButtonGroup = ({ name, options, value, onChange, error }) => {
+const RadioButtonGroup = ({ label, name, options, value, onChange, error }) => {
   return (
     <div>
-      <label>Gender</label>
+      <label>{label}</label>
       <div>
         {options.map((option) => (
           <label key={option}>

@@ -3,6 +3,9 @@ import InputField from "./widgets/InputField/InputField";
 import CheckboxField from "./widgets/CheackboxField/CheckboxField";
 import RadioButton from "./widgets/RadioButton/RadioButton";
 import Summary from "./widgets/displayData/Summary";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
+
 import "./style/form.style.css";
 
 const Form = () => {
@@ -20,6 +23,8 @@ const Form = () => {
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
+  const { t, i18n } = useTranslation();
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -32,20 +37,20 @@ const Form = () => {
     e.preventDefault();
     const newErrors = {};
 
-    if (!formData.firstName) newErrors.firstName = "First name is required";
-    if (!formData.lastName) newErrors.lastName = "Last name is required";
-    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.firstName) newErrors.firstName = t("form.errors.firstName");
+    if (!formData.lastName) newErrors.lastName = t("form.errors.lastName");
+    if (!formData.email) newErrors.email = t("form.errors.email");
     if (!/\S+@\S+\.\S+/.test(formData.email))
-      newErrors.email = "Invalid email format";
+      newErrors.email = t("form.errors.invalidEmail");
     if (formData.password.length < 8)
-      newErrors.password = "Password must be at least 8 characters";
+      newErrors.password = t("form.errors.passwordLength");
     if (formData.password !== formData.confirmPassword)
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = t("form.errors.passwordMatch");
     if (!formData.dateOfBirth)
-      newErrors.dateOfBirth = "Date of birth is required";
-    if (!formData.gender) newErrors.gender = "Gender selection is required";
+      newErrors.dateOfBirth = t("form.errors.dateOfBirth");
+    if (!formData.gender) newErrors.gender = t("form.errors.gender");
     if (!formData.termsAccepted)
-      newErrors.termsAccepted = "You must accept the terms and conditions";
+      newErrors.termsAccepted = t("form.errors.termsAccepted");
 
     setErrors(newErrors);
 
@@ -54,26 +59,40 @@ const Form = () => {
     }
   };
 
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    document.dir = lng === "ar" ? "rtl" : "ltr";
+  };
+
   return (
     <div>
+      <div>
+        <button type="button" onClick={() => changeLanguage("en")}>
+          English
+        </button>
+        <button type="button" onClick={() => changeLanguage("ar")}>
+          العربية
+        </button>
+      </div>
+
       {!submitted ? (
         <form onSubmit={handleSubmit}>
           <InputField
-            label="First Name"
+            label={t("form.firstName")}
             name="firstName"
             value={formData.firstName}
             onChange={handleChange}
             error={errors.firstName}
           />
           <InputField
-            label="Last Name"
+            label={t("form.lastName")}
             name="lastName"
             value={formData.lastName}
             onChange={handleChange}
             error={errors.lastName}
           />
           <InputField
-            label="Email"
+            label={t("form.email")}
             name="email"
             type="email"
             value={formData.email}
@@ -81,7 +100,7 @@ const Form = () => {
             error={errors.email}
           />
           <InputField
-            label="Password"
+            label={t("form.password")}
             name="password"
             type="password"
             value={formData.password}
@@ -89,7 +108,7 @@ const Form = () => {
             error={errors.password}
           />
           <InputField
-            label="Confirm Password"
+            label={t("form.confirmPassword")}
             name="confirmPassword"
             type="password"
             value={formData.confirmPassword}
@@ -97,7 +116,7 @@ const Form = () => {
             error={errors.confirmPassword}
           />
           <InputField
-            label="Date of Birth"
+            label={t("form.dateOfBirth")}
             name="dateOfBirth"
             type="date"
             value={formData.dateOfBirth}
@@ -106,20 +125,25 @@ const Form = () => {
           />
           <RadioButton
             name="gender"
-            options={["Male", "Female", "Other"]}
+            label={t("form.gender.label")}
+            options={[
+              t("form.gender.male"),
+              t("form.gender.female"),
+              t("form.gender.other"),
+            ]}
             value={formData.gender}
             onChange={handleChange}
             error={errors.gender}
           />
           <CheckboxField
-            label="I accept the terms and conditions"
+            label={t("form.termsAccepted")}
             name="termsAccepted"
             checked={formData.termsAccepted}
             onChange={handleChange}
             error={errors.termsAccepted}
           />
 
-          <button type="submit">Register</button>
+          <button type="submit">{t("form.submit")}</button>
         </form>
       ) : (
         <Summary formData={formData} />
